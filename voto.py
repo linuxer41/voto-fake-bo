@@ -49,12 +49,19 @@ options = {
 if __name__ == "__main__":
     from multiprocessing import cpu_count
     import threading
-    counter = 0
-    votes_for = 2  # 1= JUNTOS, 2 = ADN, 3 = MAS, ........
-    print(f"cpu cores: {cpu_count()}")
+    
+    votes = 0
+    url = "https://yoparticipo.voto/"
+    votes_for = 2  # 1= Creemos, 2 = ADN, 3 = MAS, ........
+    cores = cpu_count()
+    print(f"cpu cores: {cores}")
     while True:
         driver = get_driver(headless=True)
-        threading.Thread(target=run, kwargs={"driver": driver, "url": "https://yoparticipo.voto/", "opt": votes_for}
-                         ).start()
-        counter += 1
-        print(f"{counter} votos para: {options[str(votes_for)]}")
+        if cores > 1 :
+            threading.Thread(target=run, kwargs={"driver": driver, "url": "https://yoparticipo.voto/", "opt": votes_for}
+                            ).start()
+            
+        else:
+            run(driver=driver, url=url, opt=votes_for)
+        votes += 1
+        print(f"{votes} votos para: {options[str(votes_for)]}")
