@@ -1,3 +1,6 @@
+# intro
+esto es un script automatico para tollear las votaciones de la pagina [https://yoparticipo.voto/] :)
+
 # requerimientos
 - python 3.8
 - pipenv
