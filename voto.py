@@ -53,7 +53,7 @@ if __name__ == "__main__":
     votes_for = 2  # 1= JUNTOS, 2 = ADN, 3 = MAS, ........
     print(f"cpu cores: {cpu_count()}")
     while True:
-        driver = get_driver(headless=False)
+        driver = get_driver(headless=True)
         threading.Thread(target=run, kwargs={"driver": driver, "url": "https://yoparticipo.voto/", "opt": votes_for}
                          ).start()
         counter += 1
