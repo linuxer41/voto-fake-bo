@@ -55,7 +55,7 @@ if __name__ == "__main__":
     
     votes = 0
     url = "https://yoparticipo.voto/"
-    votes_for = 3  # 1 = Creemos, 2 = ADN, 3 = MAS, ........
+    votes_for = 2  # 1 = Creemos, 2 = ADN, 3 = MAS, ........
 
     cores = cpu_count()
     logger.info(f"cpu cores: {cores}")
