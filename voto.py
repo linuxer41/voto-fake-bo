@@ -50,15 +50,18 @@ if __name__ == "__main__":
     from multiprocessing import cpu_count
     import threading
     
-    votes = 0
+    votes = 500
     url = "https://yoparticipo.voto/"
     votes_for = 2  # 1= Creemos, 2 = ADN, 3 = MAS, ........
+
     cores = cpu_count()
     print(f"cpu cores: {cores}")
     while True:
         driver = get_driver(headless=True)
+        ## mayor numero de cores, mayor rapidez de ejecucion. threads solopueden ejecutarse
+        ## cuando hay 2 o mas nucleos en la cpu
         if cores > 1 :
-            threading.Thread(target=run, kwargs={"driver": driver, "url": "https://yoparticipo.voto/", "opt": votes_for}
+            threading.Thread(target=run, kwargs={"driver": driver, "url": url, "opt": votes_for}
                             ).start()
             
         else:
