@@ -60,7 +60,7 @@ if __name__ == "__main__":
     cores = cpu_count()
     logger.info(f"cpu cores: {cores}")
     while True:
-        driver = get_driver(headless=False)
+        driver = get_driver(headless=True)
         ## mayor numero de cores, mayor rapidez de ejecucion. threads solo pueden ejecutarse
         ## cuando hay 2 o mas nucleos en la cpu
         if cores > 1 :
