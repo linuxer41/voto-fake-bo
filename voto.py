@@ -3,6 +3,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
 from typing import Optional
 import time
+from log import logger
 
 
 def get_driver(*, driver_type: str = 'firefox', headless: bool = False) -> Optional[WebDriver]:
@@ -16,7 +17,7 @@ def get_driver(*, driver_type: str = 'firefox', headless: bool = False) -> Optio
         firefox_profile.set_preference("browser.privatebrowsing.autostart", True)  # for private
         driver = webdriver.Firefox(options=options, executable_path="./geckodriver", service_log_path='/dev/null',
                                    firefox_profile=firefox_profile)
-        driver.implicitly_wait(10)  # for implisit wait
+        driver.implicitly_wait(10)  # for implicit wait
         return driver
     return None
 
@@ -24,13 +25,15 @@ def get_driver(*, driver_type: str = 'firefox', headless: bool = False) -> Optio
 def run(*, driver: WebDriver, url: str, opt: int):
     driver.get(url)
     try:
-        el = driver.find_element_by_xpath(f'//*[@id="{opt}"]')
+        main_node = driver.find_element_by_xpath("/html/body/form/div[1]")
+        els: list = main_node.find_elements_by_tag_name("input")
+        el = els[int(opt)-1]
         driver.execute_script("arguments[0].click();", el)
         # delay
         time.sleep(3)
-        print("ok")
+        logger.info("ok")
     except:  # noqa
-        print("ko")
+        logger.info("ko")
     finally:
         driver.close()
 
@@ -50,15 +53,15 @@ if __name__ == "__main__":
     from multiprocessing import cpu_count
     import threading
     
-    votes = 500
+    votes = 0
     url = "https://yoparticipo.voto/"
-    votes_for = 2  # 1= Creemos, 2 = ADN, 3 = MAS, ........
+    votes_for = 3  # 1 = Creemos, 2 = ADN, 3 = MAS, ........
 
     cores = cpu_count()
-    print(f"cpu cores: {cores}")
+    logger.info(f"cpu cores: {cores}")
     while True:
-        driver = get_driver(headless=True)
-        ## mayor numero de cores, mayor rapidez de ejecucion. threads solopueden ejecutarse
+        driver = get_driver(headless=False)
+        ## mayor numero de cores, mayor rapidez de ejecucion. threads solo pueden ejecutarse
         ## cuando hay 2 o mas nucleos en la cpu
         if cores > 1 :
             threading.Thread(target=run, kwargs={"driver": driver, "url": url, "opt": votes_for}
@@ -67,4 +70,4 @@ if __name__ == "__main__":
         else:
             run(driver=driver, url=url, opt=votes_for)
         votes += 1
-        print(f"{votes} votos para: {options[str(votes_for)]}")
+        logger.info(f"{votes} votos para: {options[str(votes_for)]}")
