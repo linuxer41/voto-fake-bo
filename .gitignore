@@ -1,6 +1,7 @@
 .vscode
 .venv
 Pipfile.lock
+*.log
+out.log
 __pycache__
 *pyc
-*.log
